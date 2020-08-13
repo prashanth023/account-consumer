@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/customer")
-
 public class CustomerController {
 
 	private final CustomerService customerService;

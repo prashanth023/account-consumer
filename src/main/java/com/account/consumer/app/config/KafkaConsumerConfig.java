@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -29,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 public class KafkaConsumerConfig {
 	
 	private final AccountService accountService;
+	@Value("${kafka-topic}")
+	private String topic;
 	
 	@Bean
     public ConsumerFactory<String, String> consumerFatory() {
@@ -58,10 +61,10 @@ public class KafkaConsumerConfig {
         return new Gson();
     }
     
-    @KafkaListener(topics = { "Test4" })
+    @KafkaListener(topics= {"Test4"})
     public void getTopics(@RequestBody String account) throws AccountExsistedException {
     	
-        log.info("Kafka event consumed is: " + account);
-        accountService.addAccount(gsonJsonConverter().fromJson(account, Account.class));
+        log.info("Kafka event consumed is: " + account+" topic "+topic);
+       accountService.addAccount(gsonJsonConverter().fromJson(account, Account.class));
     }
 }
